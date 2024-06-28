@@ -23,4 +23,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ---
 
-© [Your Name] | [GitHub Link]
+© Ahnaf | ahnaf505/FaceDetec-
