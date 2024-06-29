@@ -1,0 +1,2 @@
+fastapi==0.111.0
+deepface==0.0.92
