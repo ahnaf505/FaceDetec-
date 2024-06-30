@@ -4,7 +4,7 @@ FaceDetec is a cutting-edge project aimed at precise face similarity detection a
 
 ## 🔍 Features
 
-- **Graphical User Interface**: Built with `tkinter` for intuitive interaction.
+- **Command Line Interface**: Built with `colorama` for better interaction.
 - **Deeface Library Integration**: Harnesses advanced facial recognition capabilities.
 - **Facial Feature Extraction**: Identifies eyes 👀, nose 👃, and mouth 👄 for manual review.
 - **PDF Report Generation**: Automatically generates detailed reports for analyzed faces.
