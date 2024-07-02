@@ -14,6 +14,7 @@ def generate_report(img1_base64, img2_base64, img1_name, img2_name):
         report_standard_cache = report_standard_cache.replace("##base64_img2##", img2_base64.replace("b'", ""))
         report_standard_cache = report_standard_cache.replace("##img1_name##", str(img1_name))
         report_standard_cache = report_standard_cache.replace("##img2_name##", str(img2_name))
+        report_standard_cache = report_standard_cache.replace("##facenet_score##, str(img2_name))
         file.write(report_standard_cache)
         file.close()
     
