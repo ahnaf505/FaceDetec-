@@ -4,6 +4,7 @@ from PIL import Image
 from colorama import *
 from report import *
 from compare import *
+import sys
 
 colorama.init(autoreset=True)
 just_fix_windows_console()
@@ -20,7 +21,7 @@ compare_output = run_compare(img1_pth, img2_pth)
 
 if compare_output == "err1":
     print("No face detected or other error has occoured")
-    exit
+    sys.exit()
 else:
     pass
 
@@ -34,4 +35,4 @@ with open(img2_pth, "rb") as f:
     img2_base64 = base64.b64encode(f.read())
     f.close()
 
-generate_report(img1_base64, img2_base64, "face1", "face2")
+generate_report(img1_base64, img2_base64, compare_output[1], compare_output[0])
