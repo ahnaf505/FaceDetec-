@@ -1,2 +1,3 @@
 deepface==0.0.92
 colorama==0.4.6
+opencv==4.10.0
