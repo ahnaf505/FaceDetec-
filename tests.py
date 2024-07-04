@@ -1,3 +1,4 @@
-from compare import *
+from processing import *
 
-run_compare("emusk1.jpg", "emusk2.jpg")
+
+print(cutout_face_features("emusk1.jpg"))
