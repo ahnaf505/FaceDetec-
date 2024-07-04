@@ -12,8 +12,8 @@ def run_compare(known_id_ext, unknown_id_ext):
     for i in range(50):
         try:
             facever_fn = DeepFace.verify(known_id_ext, unknown_id_ext, model_name='Facenet', distance_metric='cosine')
-            facever_di = DeepFace.verify(known_id_ext, unknown_id_ext, model_name='DeepID', distance_metric='cosine')
-            return [facever_fn['verified'], (1 - facever_fn['distance']) * 100, facever_di['verified'], (1 - facever_di['distance']) * 100]
+            facever_sf = DeepFace.verify(known_id_ext, unknown_id_ext, model_name='SFace', distance_metric='cosine')
+            return [facever_fn['verified'], (1 - facever_fn['distance']) * 100, facever_sf['verified'], (1 - facever_sf['distance']) * 100]
         except ValueError as e:
             print(e)
             pass
