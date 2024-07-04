@@ -28,18 +28,11 @@ if compare_output == "err1":
 else:
     pass
 
-
-img1_base64 = ""
-img2_base64 = ""
-with open(img1_pth, "rb") as f:
-    img1_base64 = base64.b64encode(f.read())
-    f.close()
-with open(img2_pth, "rb") as f:
-    img2_base64 = base64.b64encode(f.read())
-    f.close()
-
 face_cutted1 = cutout_face_features(img1_pth)
 face_cutted2 = cutout_face_features(img2_pth)
-generate_report(img1_base64, img2_base64, compare_output[1], compare_output[0], 
+img1_base64 = detect_and_crop_face(img1_pth)
+img2_base64 = detect_and_crop_face(img2_pth)
+generate_report(img1_base64, img2_base64, compare_output[1], compare_output[0],
+                compare_output[2], compare_output[3] ,
                 face_cutted1[0], face_cutted1[1], face_cutted1[2], face_cutted1[3],
                 face_cutted2[0], face_cutted2[1], face_cutted2[2], face_cutted2[3])

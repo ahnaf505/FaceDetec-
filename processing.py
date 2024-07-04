@@ -11,9 +11,11 @@ face_mesh = mp_face_mesh.FaceMesh(static_image_mode=True, max_num_faces=1, min_d
 def run_compare(known_id_ext, unknown_id_ext):
     for i in range(50):
         try:
-            facever = DeepFace.verify(known_id_ext, unknown_id_ext, model_name='Facenet', distance_metric='cosine')
-            return [facever['verified'], (1 - facever['distance']) * 100]
-        except ValueError:
+            facever_fn = DeepFace.verify(known_id_ext, unknown_id_ext, model_name='Facenet', distance_metric='cosine')
+            facever_di = DeepFace.verify(known_id_ext, unknown_id_ext, model_name='DeepID', distance_metric='cosine')
+            return [facever_fn['verified'], (1 - facever_fn['distance']) * 100, facever_di['verified'], (1 - facever_di['distance']) * 100]
+        except ValueError as e:
+            print(e)
             pass
     return "err1"
 
@@ -27,7 +29,6 @@ def cutout_face_features(imgpath):
     height, width, _ = image.shape
 
     image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-
     results = face_mesh.process(image_rgb)
     if not results.multi_face_landmarks:
         return None
