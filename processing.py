@@ -2,8 +2,8 @@ from deepface import DeepFace
 import cv2
 import base64
 import mediapipe as mp
-from io import BytesIO
-from PIL import Image
+import numpy as np
+import mediapipe as mp
 
 mp_face_mesh = mp.solutions.face_mesh
 face_mesh = mp_face_mesh.FaceMesh(static_image_mode=True, max_num_faces=1, min_detection_confidence=0.5)
@@ -74,28 +74,81 @@ def cutout_face_features(imgpath):
 def detect_and_crop_face(image_path):
     # Load the image
     image = cv2.imread(image_path)
+    height, width, _ = image.shape
     
-    # Convert the image to grayscale
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    
-    # Load the pre-trained Haar Cascade face detector
-    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-    
-    # Detect faces in the image
-    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5, minSize=(30, 30))
-    
-    # Ensure a face is detected
-    if len(faces) > 0:
-        # Assume only one face is detected for simplicity
-        (x, y, w, h) = faces[0]
-        
-        # Crop the detected face region
-        face_image = image[y:y+h, x:x+w]
-        
-        # Convert the cropped face image to base64
-        _, buffer = cv2.imencode('.jpg', face_image)
-        face_base64 = base64.b64encode(buffer).decode('utf-8')
-        
-        return face_base64
-    else:
+    # Analyze the face using DeepFace
+    try:
+        obj = DeepFace.analyze(image_path, actions=['emotion'], detector_backend='opencv', enforce_detection=False)
+        if not obj:
+            return None
+    except:
         return None
+    
+    # Get the facial region
+    facial_area = obj[0]['region']
+    
+    # Expand the bounding box by 10 pixels on each side
+    x_min = max(facial_area['x'] - 10, 0)
+    y_min = max(facial_area['y'] - 10, 0)
+    x_max = min(facial_area['x'] + facial_area['w'] + 10, width - 1)
+    y_max = min(facial_area['y'] + facial_area['h'] + 10, height - 1)
+    
+    # Crop the detected face region
+    face_image = image[y_min:y_max, x_min:x_max]
+    
+    # Convert the cropped face image to base64
+    _, buffer = cv2.imencode('.jpg', face_image)
+    face_base64 = base64.b64encode(buffer).decode('utf-8')
+    
+    return face_base64
+
+def draw_skin_contour(base64_image):
+    # Decode base64 to image
+    image_data = base64.b64decode(base64_image)
+    np_arr = np.frombuffer(image_data, np.uint8)
+    image = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+
+    # Initialize mediapipe face mesh
+    mp_face_mesh = mp.solutions.face_mesh
+    face_mesh = mp_face_mesh.FaceMesh(static_image_mode=True, max_num_faces=1, min_detection_confidence=0.5)
+
+    # Convert image to RGB
+    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    results = face_mesh.process(image_rgb)
+
+    if results.multi_face_landmarks:
+        for face_landmarks in results.multi_face_landmarks:
+            # Get the coordinates of the landmarks
+            landmarks = [(int(point.x * image.shape[1]), int(point.y * image.shape[0])) for point in face_landmarks.landmark]
+
+            # Draw the skin contour
+            skin_contour = [landmarks[i] for i in [10, 338, 297, 332, 284, 251, 389, 356, 454, 323, 361, 288, 397, 365, 379, 378, 400, 377, 152, 148, 176, 149, 150, 136, 172, 58, 132, 93, 234, 127, 162, 21, 54, 103, 67, 109]]
+            cv2.polylines(image, [np.array(skin_contour, dtype=np.int32)], isClosed=True, color=(0, 255, 0), thickness=1)
+
+            # Draw the left eye contour
+            left_eye_contour = [landmarks[i] for i in [33, 160, 158, 133, 153, 144, 163, 7, 33]]
+            cv2.polylines(image, [np.array(left_eye_contour, dtype=np.int32)], isClosed=True, color=(0, 255, 255), thickness=1)
+
+            # Draw the right eye contour
+            right_eye_contour = [landmarks[i] for i in [362, 385, 387, 263, 373, 380, 388, 260, 467, 359]]
+            cv2.polylines(image, [np.array(right_eye_contour, dtype=np.int32)], isClosed=True, color=(0, 255, 255), thickness=1)
+
+            # Draw the mouth contour
+            outer_lip_contour = [landmarks[i] for i in [61, 146, 91, 181, 84, 17, 314, 405, 321, 375, 291, 61]]
+            inner_lip_contour = [landmarks[i] for i in [78, 95, 88, 178, 87, 14, 317, 402, 318, 324, 308, 78]]
+            cv2.polylines(image, [np.array(outer_lip_contour, dtype=np.int32)], isClosed=True, color=(0, 0, 255), thickness=1)
+            cv2.polylines(image, [np.array(inner_lip_contour, dtype=np.int32)], isClosed=True, color=(0, 0, 255), thickness=1)
+
+            # Draw the nose contour
+            nose_contour = [landmarks[i] for i in [168, 6, 197, 195, 5, 4, 1, 2, 98, 327, 168]]
+            cv2.polylines(image, [np.array(nose_contour, dtype=np.int32)], isClosed=True, color=(255, 0, 0), thickness=1)
+
+    # Convert image back to base64
+    _, buffer = cv2.imencode('.jpg', image)
+    image_base64 = base64.b64encode(buffer).decode('utf-8')
+
+    return image_base64
+
+def face_embeddings_extract(img_path):
+    embeddings = DeepFace.represent(img_path, model_name='Facenet', detector_backend='opencv')
+    return embeddings[0]['embedding']

@@ -5,7 +5,8 @@ report_standard_cache = ""
 def generate_report(img1_base64, img2_base64, facenet_score, facenet_verif,
                     sface_verif, sface_score, 
                     leye1_base64, reye1_base64, nose1_base64, mouth1_base64,
-                    leye2_base64, reye2_base64, nose2_base64, mouth2_base64):
+                    leye2_base64, reye2_base64, nose2_base64, mouth2_base64,
+                    face_contoured1, face_contoured2, img1_embeddings):
     with open('report_templates/standard.html', 'r') as file:
         report_standard_cache = file.read()
         file.close()
@@ -39,6 +40,12 @@ def generate_report(img1_base64, img2_base64, facenet_score, facenet_verif,
         report_standard_cache = report_standard_cache.replace("##base64_img2_reye##", reye2_base64)
         report_standard_cache = report_standard_cache.replace("##base64_img2_nose##", nose2_base64)
         report_standard_cache = report_standard_cache.replace("##base64_img2_mouth##", mouth2_base64)
+
+        report_standard_cache = report_standard_cache.replace("##base64_img1contour##", face_contoured1)
+        report_standard_cache = report_standard_cache.replace("##base64_img2contour##", face_contoured2)
+
+        for i, embedding in enumerate(img1_embeddings):
+            report_standard_cache = report_standard_cache.replace("##img_mesh_embed_" + str(i+1) + "##", str(round(embedding, 3)))
         
         file.write(report_standard_cache)
         file.close()
