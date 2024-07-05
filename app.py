@@ -34,6 +34,8 @@ img1_base64 = detect_and_crop_face(img1_pth)
 img2_base64 = detect_and_crop_face(img2_pth)
 
 img1_embeddings = face_embeddings_extract(img1_pth)
+img2_embeddings = face_embeddings_extract(img2_pth)
+
 
 face_contoured1 = draw_skin_contour(img1_base64)
 face_contoured2 = draw_skin_contour(img2_base64)
@@ -41,4 +43,4 @@ generate_report(img1_base64, img2_base64, compare_output[1], compare_output[0],
                 compare_output[2], compare_output[3] ,
                 face_cutted1[0], face_cutted1[1], face_cutted1[2], face_cutted1[3],
                 face_cutted2[0], face_cutted2[1], face_cutted2[2], face_cutted2[3],
-                face_contoured1, face_contoured2, img1_embeddings)
+                face_contoured1, face_contoured2, img1_embeddings, img2_embeddings)

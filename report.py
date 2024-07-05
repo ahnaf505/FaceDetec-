@@ -6,7 +6,7 @@ def generate_report(img1_base64, img2_base64, facenet_score, facenet_verif,
                     sface_verif, sface_score, 
                     leye1_base64, reye1_base64, nose1_base64, mouth1_base64,
                     leye2_base64, reye2_base64, nose2_base64, mouth2_base64,
-                    face_contoured1, face_contoured2, img1_embeddings):
+                    face_contoured1, face_contoured2, img1_embeddings, img2_embeddings):
     with open('report_templates/standard.html', 'r') as file:
         report_standard_cache = file.read()
         file.close()
@@ -24,7 +24,6 @@ def generate_report(img1_base64, img2_base64, facenet_score, facenet_verif,
         else:
             report_standard_cache = report_standard_cache.replace("##color_facenet##", "red")
             report_standard_cache = report_standard_cache.replace("##facenet_note##", "The AI sees these two faces as a different person based on the Facenet model.")
-        print([sface_verif, sface_score])
         if sface_verif == True:
             report_standard_cache = report_standard_cache.replace("##color_sface##", "green")
             report_standard_cache = report_standard_cache.replace("##sface_note##", "The AI sees these two faces as the same person based on the SFace model.")
@@ -45,8 +44,11 @@ def generate_report(img1_base64, img2_base64, facenet_score, facenet_verif,
         report_standard_cache = report_standard_cache.replace("##base64_img2contour##", face_contoured2)
 
         for i, embedding in enumerate(img1_embeddings):
-            report_standard_cache = report_standard_cache.replace("##img_mesh_embed_" + str(i+1) + "##", str(round(embedding, 3)))
+            report_standard_cache = report_standard_cache.replace("##img1_mesh_embed_" + str(i+1) + "##", str(round(embedding, 3)))
         
+        for i, embedding in enumerate(img2_embeddings):
+            report_standard_cache = report_standard_cache.replace("##img2_mesh_embed_" + str(i+1) + "##", str(round(embedding, 3)))
+
         file.write(report_standard_cache)
         file.close()
     
