@@ -11,7 +11,7 @@ FaceDetec is a cutting-edge project aimed at precise face similarity detection a
 
 ## 🚀 Status
 
-FaceDetec is currently in active development. The code is usable for production in CLI-only mode and is thoroughly documented with comments for clarity and ease of understanding. The listed features are being refined and enhanced for optimal performance. Please wait for releases and more info for expanded production use.
+FaceDetec is currently usable for production in a CLI-only mode. The code is thoroughly documented to ensure clarity and ease of understanding. Stay tuned for upcoming releases to leverage the full functionality of FaceDetec. Contributions and feedback are welcome as we work towards a stable release.
 
 ## 📝 Usage
 

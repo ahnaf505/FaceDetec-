@@ -53,18 +53,18 @@ def generate_report(img1_base64, img2_base64, facenet_score, facenet_verif,
 
         # Handling Facenet verification result
         if facenet_verif == True:
-            report_standard_cache = report_standard_cache.replace("##color_facenet##", "green")
+            report_standard_cache = report_standard_cache.replace("color_facenet", "green")
             report_standard_cache = report_standard_cache.replace("##facenet_note##", "The AI sees these two faces as the same person based on the Facenet model.")
         else:
-            report_standard_cache = report_standard_cache.replace("##color_facenet##", "red")
+            report_standard_cache = report_standard_cache.replace("color_facenet", "red")
             report_standard_cache = report_standard_cache.replace("##facenet_note##", "The AI sees these two faces as a different person based on the Facenet model.")
 
         # Handling SFace verification result
         if sface_verif == True:
-            report_standard_cache = report_standard_cache.replace("##color_sface##", "green")
+            report_standard_cache = report_standard_cache.replace("color_sface", "green")
             report_standard_cache = report_standard_cache.replace("##sface_note##", "The AI sees these two faces as the same person based on the SFace model.")
         else:
-            report_standard_cache = report_standard_cache.replace("##color_sface##", "red")
+            report_standard_cache = report_standard_cache.replace("color_sface", "red")
             report_standard_cache = report_standard_cache.replace("##sface_note##", "The AI sees these two faces as a different person based on the SFace model.")
 
         # Replacing placeholders with base64 strings for individual facial features of the first image
