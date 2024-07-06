@@ -1,5 +1,6 @@
 import platform  # Importing platform module to get system information
 from datetime import datetime  # Importing datetime module to handle date and time
+import random  # Importing random module to random number generation
 
 report_standard_cache = ""  # Initializing an empty string to cache the report template
 
@@ -36,9 +37,11 @@ def generate_report(img1_base64, img2_base64, facenet_score, facenet_verif,
     with open('report_templates/standard.html', 'r') as file:
         report_standard_cache = file.read()
         file.close()
+    
+    randid = random.randint(22222222, 9999999999999)  # Generate random number ID for this report using the random.randint module
 
-    # Writing the modified HTML content to a new file
-    with open('face_comparison_report.html', 'w+') as file:
+    # Writing the modified HTML content to a new file with a randomly genreted ID in the filename
+    with open('face_comparison_report - ' + str(randid) + '.html', 'w+') as file:
         # Removing extra characters from the base64 strings
         img1_base64 = str(img1_base64).rstrip("'")
         img2_base64 = str(img2_base64).rstrip("'")
@@ -99,3 +102,5 @@ def generate_report(img1_base64, img2_base64, facenet_score, facenet_verif,
         # Writing the modified content to the file
         file.write(report_standard_cache)
         file.close()
+    
+    return randid  # Return the randomly generated id specific for this report
