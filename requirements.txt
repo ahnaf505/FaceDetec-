@@ -1,7 +1,7 @@
 deepface
 colorama
-opencv-python
 opencv-python-headless
+tensorflow==2.15.1
 tf-keras
 mediapipe
 numpy
