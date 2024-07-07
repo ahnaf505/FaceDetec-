@@ -1,6 +1,8 @@
 deepface
 colorama
 opencv-python
+opencv-python-headless
+tf-keras
 mediapipe
 numpy
 python-magic
