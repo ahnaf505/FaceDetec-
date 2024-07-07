@@ -7,6 +7,9 @@
 ## 
 **FaceDetec'** is a cutting-edge project aimed at precise face similarity detection and analysis.
 
+### ⚠ Curently only support linux
+  
+
 ## 🔍 Features
 
 - **Command Line Interface**: Built with `colorama` for better interaction.
@@ -46,27 +49,12 @@ This guide will help you set up and run **FaceDetec'** on your machine.
     cd FaceDetec-
     ```
 
-#### Step 2: Create a Virtual Environment (Optional but recommended)
+#### Step 2: Install libgl1-mesa-glx (Really important DO NO SKIP)
 
-1. Run the following command to create a virtual environment (replace `venv` with your preferred environment name):
-
-    ```sh
-    python -m venv venv
-    ```
-
-2. Activate the virtual environment:
-
-    - On Windows:
-
-        ```sh
-        .\venv\Scripts\activate
-        ```
-
-    - On macOS and Linux:
-
-        ```sh
-        source venv/bin/activate
-        ```
+  ```sh
+  sudo apt-get update
+  sudo apt install -y libgl1-mesa-glx
+   ```
 
 #### Step 3: Install the Requirements
 
