@@ -40,7 +40,11 @@ This guide will help you set up and run **FaceDetec'** on your machine.
     git clone https://github.com/ahnaf505/FaceDetec-.git
     ```
 
-4. Navigate into the FaceDetec- directory
+4. Navigate into the FaceDetec- directory:
+
+   ```sh
+    cd FaceDetec-
+    ```
 
 #### Step 2: Create a Virtual Environment (Optional but recommended)
 
