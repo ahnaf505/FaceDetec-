@@ -8,8 +8,7 @@
 **FaceDetec'** is a cutting-edge project aimed at precise face similarity detection and analysis.
 
 ### ⚠ Curently only support linux
-  
-
+# 
 ## 🔍 Features
 
 - **Command Line Interface**: Built with `colorama` for better interaction.
