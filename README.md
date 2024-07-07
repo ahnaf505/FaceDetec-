@@ -5,23 +5,23 @@
 </p>
 
 ## 
-FaceDetec is a cutting-edge project aimed at precise face similarity detection and analysis.
+**FaceDetec'** is a cutting-edge project aimed at precise face similarity detection and analysis.
 
 ## 🔍 Features
 
 - **Command Line Interface**: Built with `colorama` for better interaction.
 - **Deeface Library Integration**: Harnesses advanced facial recognition capabilities.
 - **MediaPipe Library Integration**: Integrating advanced facial contour detection capabilities.
-- **Facial Feature Extraction**: Identifies eyes 👀, nose 👃, and mouth 👄 for manual review.
+- **Facial Feature Extraction**: Identifies eyes 👀, nose 👃, and mouth for manual review.
 - **HTML Report Generation**: Automatically generates detailed reports for analyzed faces.
 
 ## 🚀 Status
 
-FaceDetec is currently usable for production in a CLI-only mode. Stay tuned for upcoming releases to leverage the full functionality of FaceDetec. Contributions and feedback are welcome as we work towards a GUI mode.
+FaceDetec' is currently usable for production in a CLI-only mode. Stay tuned for upcoming releases to leverage the full functionality of FaceDetec. Contributions and feedback are welcome as we work towards a GUI mode.
 
 ## 📝 Usage
 
-**Python Project Setup Guide**
+**FaceDetec' Project Setup Guide**
 
 This guide will help you set up and run 'FaceDetec'' on your machine.
 
@@ -34,7 +34,7 @@ This guide will help you set up and run 'FaceDetec'' on your machine.
 
 1. Open a terminal or command prompt.
 2. Navigate to the directory where you want to clone the project.
-3. Run the following command to clone the repository (replace `repository_url` with the actual URL of your project repository):
+3. Run the following command to clone the repository:
 
     ```sh
     git clone https://github.com/ahnaf505/FaceDetec-.git
