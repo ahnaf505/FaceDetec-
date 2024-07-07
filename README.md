@@ -23,7 +23,7 @@ FaceDetec' is currently usable for production in a CLI-only mode. Stay tuned for
 
 **FaceDetec' Project Setup Guide**
 
-This guide will help you set up and run 'FaceDetec'' on your machine.
+This guide will help you set up and run **FaceDetec'** on your machine.
 
 ### Prerequisites
 
