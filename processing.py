@@ -121,7 +121,11 @@ def draw_skin_contour(base64_image):
 
             nose_contour = [landmarks[i] for i in [168, 6, 197, 195, 5, 4, 1, 2, 98, 327, 168]]
             cv2.polylines(image, [np.array(nose_contour, dtype=np.int32)], isClosed=True, color=(255, 0, 0), thickness=1)
-
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    blur = cv2.blur(gray, (10,10))
+    ret, thresh = cv2.threshold(blur, 1, 255, cv2.THRESH_OTSU)
+    contours, heirarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    cv2.drawContours(image, contours, -1, (255,255,0), 1)
     _, buffer = cv2.imencode('.jpg', image)
     image_base64 = base64.b64encode(buffer).decode('utf-8')
 
