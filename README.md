@@ -5,7 +5,7 @@
 </p>
 
 ## 
-**FaceDetec'** is a cutting-edge project aimed at precise face similarity detection and analysis.
+**FaceDetec' | Precise Face Comparison** is a cutting-edge project aimed at precise face similarity detection and analysis.
 
 ### ⚠ Curently only support linux
 # 
@@ -29,7 +29,7 @@ This guide will help you set up and run **FaceDetec'** on your machine.
 
 ### Prerequisites
 
-- Python installed on your machine (version 3.9 or higher is recommended).
+- Python installed on your machine (version 3.9 or higher).
 - `pip` (Python package installer) installed.
 
 #### Step 1: Clone the Project Repository

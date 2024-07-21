@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Spinner Example</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .terminal {
+            background-color: #2d2d2d;
+            color: #cccccc;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 10px;
+            border-radius: 5px;
+            height: 300px;
+            overflow-y: auto;
+        }
+        .terminal .command {
+            color: #78c0ff;
+        }
+        .terminal .output {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h3>Processing Image...</h3>
+        <div style="height: 10px;"></div>
+        <div class="progress" role="progressbar" aria-label="Processing Image..." aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" id="pgbar1" style="width: 75%">75%</div>
+          </div>
+    </div>
+
+    <div style="height: 30px;"></div>
+
+
+    <div class="container">
+        <div class="terminal" id="terminal"></div>
+    </div>
+    
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        const url = '/status-update/{{ ver_id }}'; // Replace with your API endpoint
+        let count = 0;
+        
+        function updateProgressBar(progress) {
+            pgbar1.style.width = `${progress}%`;
+            //pgbar1.setAttribute('aria-valuenow', progress);
+            pgbar1.textContent = `${progress}%`;
+        }
+
+        function postInteger() {
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ key: 'value' })  // Add body content as needed
+            })
+            .then(response => response.json())
+            .then(data => updateProgressBar(data))
+            .catch(error => console.error('Error:', error));  // Add error handling
+        }
+        
+        function sendRequests() {
+            setInterval(() => {
+                postInteger();
+            }, 100);
+        }
+        sendRequests();
+        
+        const terminal = document.getElementById('terminal');
+        const commandInput = document.getElementById('commandInput');
+
+        function executeCommand() {
+            const command = commandInput.value;
+            if (command.trim() === '') return;
+
+            const commandElement = document.createElement('div');
+            commandElement.classList.add('command');
+            commandElement.textContent = `> ${command}`;
+            terminal.appendChild(commandElement);
+
+            const outputElement = document.createElement('div');
+            outputElement.classList.add('output');
+            outputElement.textContent = `Output for: ${command}`;
+            terminal.appendChild(outputElement);
+
+            commandInput.value = '';
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+</script>
+</body>
+</html>

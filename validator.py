@@ -1,14 +1,12 @@
-import os.path
-import magic
+from PIL import Image, UnidentifiedImageError
+import base64
+from io import BytesIO
 
-def is_file_exists(file_path):
-    if os.path.isfile(file_path):
-        mime = magic.Magic(mime=True)
-        file_mime_type = mime.from_file(file_path)
-
-        if file_mime_type.startswith('image/'):
+def is_base64_image(base64_string: str) -> bool:
+        try:
+            image_data = base64.b64decode(base64_string)
+            image = Image.open(BytesIO(image_data))
+            image.verify()  # This verifies that an image is valid
             return True
-        else:
+        except (base64.binascii.Error, UnidentifiedImageError):
             return False
-    else:
-        return None

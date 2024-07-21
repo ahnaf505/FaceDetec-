@@ -1,8 +1,10 @@
 deepface
-colorama
+fastapi
+Pillow
 opencv-python-headless
 tensorflow==2.15.1
 tf-keras
 mediapipe
 numpy
+tinydb
 python-magic
