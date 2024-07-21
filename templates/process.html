@@ -44,53 +44,32 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        const url = '/status-update/{{ ver_id }}'; // Replace with your API endpoint
-        let count = 0;
-        
-        function updateProgressBar(progress) {
+        const progressBar = document.getElementById('progressBar');
+        const ws = new WebSocket('/ws-progressbr-update/{{ ver_id }}');
+
+        ws.onmessage = function(event) {
+            const progress = event.data;
             pgbar1.style.width = `${progress}%`;
             //pgbar1.setAttribute('aria-valuenow', progress);
             pgbar1.textContent = `${progress}%`;
-        }
+            executeCommand();
+        };
 
-        function postInteger() {
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ key: 'value' })  // Add body content as needed
-            })
-            .then(response => response.json())
-            .then(data => updateProgressBar(data))
-            .catch(error => console.error('Error:', error));  // Add error handling
-        }
+        ws.onclose = function(event) {
+            console.log('WebSocket is closed now.');
+        };
+
+        ws.onerror = function(error) {
+            console.error('WebSocket error:', error);
+        };
         
-        function sendRequests() {
-            setInterval(() => {
-                postInteger();
-            }, 100);
-        }
-        sendRequests();
-        
-        const terminal = document.getElementById('terminal');
-        const commandInput = document.getElementById('commandInput');
+        const terminal = document.getElementById('terminal');;
 
         function executeCommand() {
-            const command = commandInput.value;
-            if (command.trim() === '') return;
-
-            const commandElement = document.createElement('div');
-            commandElement.classList.add('command');
-            commandElement.textContent = `> ${command}`;
-            terminal.appendChild(commandElement);
-
             const outputElement = document.createElement('div');
             outputElement.classList.add('output');
             outputElement.textContent = `Output for: ${command}`;
             terminal.appendChild(outputElement);
-
-            commandInput.value = '';
             terminal.scrollTop = terminal.scrollHeight;
         }
 </script>

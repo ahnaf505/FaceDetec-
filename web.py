@@ -1,9 +1,9 @@
-from fastapi import FastAPI, Request, UploadFile, File
+from fastapi import FastAPI, Request, UploadFile, File, WebSocket, WebSocketDisconnect
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import JSONResponse, HTMLResponse
 from pydantic import BaseModel
 import base64
-from io import BytesIO
+import asyncio
 from typing import Optional
 from validator import *
 import time
@@ -50,7 +50,13 @@ async def upsuccess(request: Request, filever_id: int):
         return templating.TemplateResponse("nopermit.html", {"request": request})
 
 
-@app.post("/status-update/{ver_id}")
-async def upload_files(ver_id: int):
+@app.websocket("/ws-progressbr-update/{ver_id}")
+async def websocket_endpoint(websocket: WebSocket, ver_id: int):
     
-    return 
+    await websocket.accept()
+    try:
+        for progress in range(101):  # Simulate task progress
+            await websocket.send_text(str(progress))
+            await asyncio.sleep(0.1)  # Simulate time delay for each progress update
+    except WebSocketDisconnect:
+        print("Client disconnected")

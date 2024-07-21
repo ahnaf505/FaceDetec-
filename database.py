@@ -11,5 +11,8 @@ def filever_verif(ver_id):
     if not result:
         return False
     else:
-        db.remove(User.veriv_id == str(ver_id))
         return True
+
+def expire_verif(ver_id):
+    User = Query()
+    db.remove(User.veriv_id == str(ver_id))
