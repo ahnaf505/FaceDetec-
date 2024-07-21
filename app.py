@@ -1,35 +1,4 @@
-import colorama
-from colorama import *
-from report import *
-from processing import *
-from validator import *
-import sys
-import time
-
-colorama.init(autoreset=True)
-
-just_fix_windows_console()
-
-time.sleep(2)
-
-print(colorama.ansi.clear_screen())
-print(Back.BLACK + Fore.BLUE + "FaceDetec' | CLI Interface")
-
-print(Back.WHITE + "Press enter to start making a face comparison report...")
-input('\n')
-
-img1_pth = input("Please input path for the first face image: ")
-img2_pth = input("Please input path for the second face image: ")
-
-if is_file_exists(img1_pth) != True:
-    print("Image 1 did not exist or is not an image...")
-    sys.exit()
-
-elif is_file_exists(img2_pth) != True:
-    print("Image 2 did not exist or is not an image...")
-    sys.exit()
-else:
-    print("Image files successfully verified...\n")
+int("Image files successfully verified...\n")
 
 print("Running face comparison processing...")
 compare_output = run_compare(img1_pth, img2_pth)

@@ -28,7 +28,7 @@
         <h3>Processing Image...</h3>
         <div style="height: 10px;"></div>
         <div class="progress" role="progressbar" aria-label="Processing Image..." aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-            <div class="progress-bar progress-bar-striped progress-bar-animated" id="pgbar1" style="width: 75%">75%</div>
+            <div class="progress-bar progress-bar-striped progress-bar-animated" id="pgbar1" style="width: 0%">0%</div>
           </div>
     </div>
 
@@ -52,7 +52,6 @@
             pgbar1.style.width = `${progress}%`;
             //pgbar1.setAttribute('aria-valuenow', progress);
             pgbar1.textContent = `${progress}%`;
-            executeCommand();
         };
 
         ws.onclose = function(event) {
@@ -65,13 +64,28 @@
         
         const terminal = document.getElementById('terminal');;
 
-        function executeCommand() {
+        function executeCommand(command) {
             const outputElement = document.createElement('div');
             outputElement.classList.add('output');
-            outputElement.textContent = `Output for: ${command}`;
+            outputElement.textContent = `${command}`;
             terminal.appendChild(outputElement);
             terminal.scrollTop = terminal.scrollHeight;
         }
+
+        const ws2 = new WebSocket('/ws-terminal-update/{{ ver_id }}');
+
+        ws2.onmessage = function(event) {
+            const progress = event.data;
+            executeCommand(progress);
+        };
+
+        ws2.onclose = function(event) {
+            console.log('WebSocket is closed now.');
+        };
+
+        ws2.onerror = function(error) {
+            console.error('WebSocket error:', error);
+        };
 </script>
 </body>
 </html>

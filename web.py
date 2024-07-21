@@ -37,6 +37,8 @@ async def upload_files(file1: UploadFile = File(...), file2: UploadFile = File(.
     else:
         succ_id = upsuccess_verif_genid()
         filever_add(succ_id)
+        print(file1_base64)
+        new_task(file1_base64, file2_base64, succ_id)
         return "success_"+str(succ_id)
 
 # This is just a placeholder to show how you might handle the base64 encoding
@@ -52,11 +54,18 @@ async def upsuccess(request: Request, filever_id: int):
 
 @app.websocket("/ws-progressbr-update/{ver_id}")
 async def websocket_endpoint(websocket: WebSocket, ver_id: int):
-    
     await websocket.accept()
     try:
-        for progress in range(101):  # Simulate task progress
+        await websocket.send_text(str(percent_task(ver_id)))
+    except WebSocketDisconnect:
+        print("Client disconnected")
+
+@app.websocket("/ws-terminal-update/{ver_id}")
+async def websocket_endpoint(websocket: WebSocket, ver_id: int):
+    await websocket.accept()
+    try:
+        for progress in range(101):
             await websocket.send_text(str(progress))
-            await asyncio.sleep(0.1)  # Simulate time delay for each progress update
+            await asyncio.sleep(1)
     except WebSocketDisconnect:
         print("Client disconnected")

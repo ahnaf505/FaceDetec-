@@ -3,15 +3,24 @@ import cv2
 import base64
 import mediapipe as mp
 import numpy as np
+from PIL import Image
+from io import BytesIO
 
 mp_face_mesh = mp.solutions.face_mesh
 face_mesh = mp_face_mesh.FaceMesh(static_image_mode=True, max_num_faces=1, min_detection_confidence=0.5)
 
 def run_compare(known_id_ext, unknown_id_ext):
+    image_data1 = base64.b64decode(known_id_ext)
+    image_bytes1 = BytesIO(image_data1)
+    image1 = Image.open(image_bytes1)
+
+    image_data2 = base64.b64decode(unknown_id_ext)
+    image_bytes2 = BytesIO(image_data2)
+    image2 = Image.open(image_bytes2)
     for i in range(50):
         try:
-            facever_fn = DeepFace.verify(known_id_ext, unknown_id_ext, model_name='Facenet', distance_metric='cosine')
-            facever_sf = DeepFace.verify(known_id_ext, unknown_id_ext, model_name='SFace', distance_metric='cosine')
+            facever_fn = DeepFace.verify(image1, image2, model_name='Facenet', distance_metric='cosine')
+            facever_sf = DeepFace.verify(image1, image2, model_name='SFace', distance_metric='cosine')
             return [facever_fn['verified'], (1 - facever_fn['distance']) * 100, facever_sf['verified'], (1 - facever_sf['distance']) * 100]
         except ValueError as e:
             pass
